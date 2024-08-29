@@ -65,24 +65,25 @@
 (require 'ob-ref)
 (require 'ob-comint)
 (require 'ob-eval)
+(require 'gptel)
 
 ;; optionally declare default header arguments for this language
-(defvar org-babel-default-header-args:template '())
+(defvar org-babel-default-header-args:gptel '())
 
 ;; This function expands the body of a source code block by doing things like
 ;; prepending argument definitions to the body, it should be called by the
-;; `org-babel-execute:template' function below. Variables get concatenated in
+;; `org-babel-execute:gptel' function below. Variables get concatenated in
 ;; the `mapconcat' form, therefore to change the formatting you can edit the
 ;; `format' form.
-(defun org-babel-expand-body:template (body params &optional processed-params)
+(defun org-babel-expand-body:gptel (body params &optional processed-params)
   "Expand BODY according to PARAMS, return the expanded body."
-  (require 'inf-template nil t)
+  (require 'inf-gptel nil t)
   (let ((vars (org-babel--get-vars (or processed-params (org-babel-process-params params)))))
     (concat
      (mapconcat ;; define any variables
       (lambda (pair)
         (format "%s=%S"
-                (car pair) (org-babel-template-var-to-template (cdr pair))))
+                (car pair) (org-babel-gptel-var-to-gptel (cdr pair))))
       vars "\n")
      "\n" body "\n")))
 
@@ -105,23 +106,23 @@
 ;; "session" evaluation).  Also you are free to define any new header
 ;; arguments which you feel may be useful -- all header arguments
 ;; specified by the user will be available in the PARAMS variable.
-(defun org-babel-execute:template (body params)
-  "Execute a block of Template code with org-babel.
+(defun org-babel-execute:gptel (body params)
+  "Execute a block of gptel code with org-babel.
 This function is called by `org-babel-execute-src-block'"
-  (message "executing Template source code block")
+  (message "executing gptel source code block")
   (let* ((processed-params (org-babel-process-params params))
          ;; set the session if the value of the session keyword is not the
          ;; string `none'
          (session (unless (string= value "none")
-                    (org-babel-template-initiate-session
+                    (org-babel-gptel-initiate-session
                      (cdr (assq :session processed-params)))))
          ;; variables assigned for use in the block
          (vars (org-babel--get-vars processed-params))
          (result-params (assq :result-params processed-params))
          ;; either OUTPUT or VALUE which should behave as described above
          (result-type (assq :result-type processed-params))
-         ;; expand the body with `org-babel-expand-body:template'
-         (full-body (org-babel-expand-body:template
+         ;; expand the body with `org-babel-expand-body:gptel'
+         (full-body (org-babel-expand-body:gptel
                      body params processed-params)))
     ;; actually execute the source-code block either in a session or
     ;; possibly by dropping it to a temporary file and evaluating the
@@ -141,25 +142,25 @@ This function is called by `org-babel-execute-src-block'"
 
 ;; This function should be used to assign any variables in params in
 ;; the context of the session environment.
-(defun org-babel-prep-session:template (session params)
+(defun org-babel-prep-session:gptel (session params)
   "Prepare SESSION according to the header arguments specified in PARAMS."
   )
 
-(defun org-babel-template-var-to-template (var)
-  "Convert an elisp var into a string of template source code
+(defun org-babel-gptel-var-to-gptel (var)
+  "Convert an elisp var into a string of gptel source code
 specifying a var of the same value."
   (format "%S" var))
 
-(defun org-babel-template-table-or-string (results)
+(defun org-babel-gptel-table-or-string (results)
   "If the results look like a table, then convert them into an
 Emacs-lisp table, otherwise return the results as a string."
   )
 
-(defun org-babel-template-initiate-session (&optional session)
+(defun org-babel-gptel-initiate-session (&optional session)
   "If there is not a current inferior-process-buffer in SESSION then create.
 Return the initialized session."
   (unless (string= session "none")
     ))
 
-(provide 'ob-template)
-;;; ob-template.el ends here
+(provide 'ob-gptel)
+;;; ob-gptel.el ends here
