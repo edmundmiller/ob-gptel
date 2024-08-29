@@ -19,47 +19,53 @@
 ;;
 ;;; Code:
 
-
+(require 'org)
 (require 'ob)
 (require 'gptel)
 
-(defcustom org-babel-gptel-timeout 10
-  "Timeout in seconds for a gptel request."
-  :type 'integer
+(defgroup org-babel-gptel nil
+  "Org Babel support for GPTel."
   :group 'org-babel)
 
+(defcustom org-babel-gptel-timeout 10
+  "Timeout in seconds for a GPTel request."
+  :type 'integer
+  :group 'org-babel-gptel)
+
 (defcustom org-babel-gptel-default-model "gpt-3.5-turbo"
-  "Default model to use for gptel requests."
+  "Default model to use for GPTel requests."
   :type '(choice (const :tag "gpt-3.5-turbo" "gpt-3.5-turbo")
           (const :tag "gpt-4" "gpt-4")
           (const :tag "claude-v1" "claude-v1")
           (const :tag "claude-instant-v1" "claude-instant-v1")
           (string :tag "Other"))
-  :group 'org-babel)
+  :group 'org-babel-gptel)
 
 (defcustom org-babel-gptel-default-system-message ""
-  "Default system message to use for gptel requests."
+  "Default system message to use for GPTel requests."
   :type 'string
-  :group 'org-babel)
+  :group 'org-babel-gptel)
 
 (defun org-babel-execute:gptel (body params)
-  "Execute a block of Gptel code with org-babel.
-This function is called by `org-babel-execute-src-block'."
-  (let* ((model (or (cdr (assoc :model params))
-                    org-babel-gptel-default-model))
-         (system-message (or (cdr (assoc :system-message params))
+  "Execute a block of GPTel code with Org Babel.
+BODY is the code to execute.
+PARAMS are the header arguments specified in the code block."
+  (let* ((model (or (alist-get :model params) org-babel-gptel-default-model))
+         (system-message (or (alist-get :system-message params)
                              org-babel-gptel-default-system-message))
-         (timeout (or (cdr (assoc :timeout params))
-                      org-babel-gptel-timeout))
-         (response nil)
-         (callback-func (lambda (resp info)
-                          (setq response resp))))
+         (callback (lambda (response _)
+                     (when (null response)
+                       (error "GPTel request failed"))
+                     response)))
     (gptel-request body
-      :system system-message
       :model model
-      :callback callback-func
-      :timeout timeout)
-    (or response "Error: gptel-request timed out.")))
+      :system system-message
+      :callback callback)))
+
+(defvar org-babel-default-header-args:gptel
+  '((:results . "output")
+    (:gptel-default-mode . t))
+  "Default arguments for evaluating a GPTel source block.")
 
 (provide 'ob-gptel)
 ;;; ob-gptel.el ends here
