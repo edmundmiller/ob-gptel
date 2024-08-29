@@ -1,0 +1,13 @@
+#+title: ob-gptel
+
+[[https://github.com/karthink/gptel/discussions/364][org-babel support · karthink/gptel · Discussion #364 · GitHub]]
+
+I was looking at https://github.com/tyler-dodge/org-assistant and I thought it would be great to have an org babel package. Something like
+
+#+begin_src gptel :model kagi:summarize:agnes :system-message "Summarize this link"
+https://blah.com
+#+end_src
+
+Sure, you can write an ob-gptel library/package quite easily using gptel's gptel-request API.
+
+(gptel-request handles the plumbing that gptel-send and the transient menu use.  There are examples of how to use it in the wiki.)6
