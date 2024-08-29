@@ -8,6 +8,5 @@ I was looking at https://github.com/tyler-dodge/org-assistant and I thought it w
 https://blah.com
 #+end_src
 
-Sure, you can write an ob-gptel library/package quite easily using gptel's gptel-request API.
-
-(gptel-request handles the plumbing that gptel-send and the transient menu use.  There are examples of how to use it in the wiki.)6
+#+RESULTS:
+: GPTel request failed: Keyword argument :model not one of (:callback :buffer :position :context :dry-run :stream :in-place :system)
