@@ -1,12 +1,12 @@
 ;;; ob-gptel.el --- Org Babel functions for LLM evaluation via gptel -*- lexical-binding: t; -*-
 
-;; Copyright (C) Edmund Miller
+;; Copyright (C) 2024 Edmund Miller
 
 ;; Author: Edmund Miller <git@edmundmiller.dev>
 ;; Maintainer: Edmund Miller <git@edmundmiller.dev>
 ;; Created: August 29, 2024
 ;; Modified: August 29, 2024
-;; Version: 0.01
+;; Version: 0.0.1
 ;; Keywords: literate programming, reproducible research
 ;; Homepage: https://github.com/edmundmiller/ob-gptel
 ;; Package-Requires: ((emacs "25.1") (gptel "0.1"))
@@ -36,64 +36,35 @@
 ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 ;; Boston, MA 02110-1301, USA.
 
+;;; License:
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 3, or (at your option)
+;; any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ;;; Commentary:
 
-;; This file is not intended to ever be loaded by org-babel, rather it is a
-;; template for use in adding new language support to Org-babel. Good first
-;; steps are to copy this file to a file named by the language you are adding,
-;; and then use `query-replace' to replace all strings of "template" in this
-;; file with the name of your new language.
-
-;; After the `query-replace' step, it is recommended to load the file and
-;; register it to org-babel either via the customize menu, or by evaluating the
-;; line: (add-to-list 'org-babel-load-languages '(template . t)) where
-;; `template' should have been replaced by the name of the language you are
-;; implementing (note that this applies to all occurrences of 'template' in this
-;; file).
-
-;; After that continue by creating a simple code block that looks like e.g.
-;;
-;; #+begin_src template
-
-;; test
-
-;; #+end_src
-
-;; Finally you can use `edebug' to instrumentalize
-;; `org-babel-expand-body:template' and continue to evaluate the code block. You
-;; try to add header keywords and change the body of the code block and
-;; reevaluate the code block to observe how things get handled.
-
-;;
-;; If you have questions as to any of the portions of the file defined
-;; below please look to existing language support for guidance.
-;;
-;; If you are planning on adding a language to org-babel we would ask
-;; that if possible you fill out the FSF copyright assignment form
-;; available at https://orgmode.org/request-assign-future.txt as this
-;; will make it possible to include your language support in the core
-;; of Org-mode, otherwise unassigned language support files can still
-;; be included in the contrib/ directory of the Org-mode repository.
-
+;; Provides an org-babel interface for evaluating LLM prompts via the gptel package.
 
 ;;; Requirements:
 
-;; Use this section to list the requirements of this language.  Most
-;; languages will require that at least the language be installed on
-;; the user's system, and the Emacs major mode relevant to the
-;; language be installed as well.
+;; - Emacs 25.1+
+;; - gptel 0.1+
 
 ;;; Code:
-
-(require 'org)
 (require 'ob)
 (require 'ob-ref)
 (require 'ob-comint)
 (require 'ob-eval)
-;; possibly require modes required for your language
-
-;; optionally define a file extension for this language
-(add-to-list 'org-babel-tangle-lang-exts '("template" . "tmp"))
 
 ;; optionally declare default header arguments for this language
 (defvar org-babel-default-header-args:template '())
