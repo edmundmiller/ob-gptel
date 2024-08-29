@@ -1,11 +1,15 @@
-;;; ob-template.el --- org-babel functions for  evaluation
+;;; ob-gptel.el --- Org Babel functions for LLM evaluation via gptel -*- lexical-binding: t; -*-
 
-;; Copyright (C) your name here
+;; Copyright (C) Edmund Miller
 
-;; Author: your name here
-;; Keywords: literate programming, reproducible research
-;; Homepage: https://orgmode.org
+;; Author: Edmund Miller <git@edmundmiller.dev>
+;; Maintainer: Edmund Miller <git@edmundmiller.dev>
+;; Created: August 29, 2024
+;; Modified: August 29, 2024
 ;; Version: 0.01
+;; Keywords: literate programming, reproducible research
+;; Homepage: https://github.com/edmundmiller/ob-gptel
+;; Package-Requires: ((emacs "25.1") (gptel "0.1"))
 
 ;;; License:
 
