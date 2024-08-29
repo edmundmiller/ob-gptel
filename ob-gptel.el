@@ -53,9 +53,10 @@ PARAMS are the header arguments specified in the code block."
   (let* ((model (or (alist-get :model params) org-babel-gptel-default-model))
          (system-message (or (alist-get :system-message params)
                              org-babel-gptel-default-system-message))
-         (callback (lambda (response _)
+         (callback (lambda (response info)
                      (when (null response)
-                       (error "GPTel request failed"))
+                       (error "GPTel request failed with status: %s"
+                              (plist-get info :status)))
                      response)))
     (gptel-request body
       :model model
@@ -66,6 +67,13 @@ PARAMS are the header arguments specified in the code block."
   '((:results . "output")
     (:gptel-default-mode . t))
   "Default arguments for evaluating a GPTel source block.")
+
+(defun org-babel-gptel-default-mode ()
+  "Enable `gptel-default-mode' in the current buffer if :gptel-default-mode is non-nil."
+  (when (org-babel-read :gptel-default-mode params)
+    (gptel-default-mode 1)))
+
+(add-hook 'org-babel-after-execute-hook #'org-babel-gptel-default-mode)
 
 (provide 'ob-gptel)
 ;;; ob-gptel.el ends here
