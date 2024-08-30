@@ -4,8 +4,9 @@
 
 I was looking at https://github.com/tyler-dodge/org-assistant and I thought it would be great to have an org babel package. Something like
 
-#+begin_src gptel :model claude-3-opus-20240229
+#+begin_src gptel :model "claude-3-opus-20240229"
 Who's a good LLM?
 #+end_src
 
 #+RESULTS:
+| :model | claude-3-opus-20240229 | :system | You are a helpful assistant. | :stream | :json-false | :max_tokens | 1024 | :messages | [(:role user :content Who's a good LLM?)] | :temperature | 1.0 |

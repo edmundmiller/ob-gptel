@@ -72,7 +72,12 @@
     (:system-message . "You are a helpful assistant."))
   "Default arguments for evaluating a gptel source block.")
 
-(defcustom ob-gptel-default-model "gpt-3.5-turbo"
+(defcustom ob-gptel-default-backend gptel-backend
+  "Default backend to use when executing a gptel source block."
+  :group 'org-babel
+  :type 'string)
+
+(defcustom ob-gptel-default-model gptel-model
   "Default model to use when executing a gptel source block."
   :group 'org-babel
   :type 'string)
@@ -90,22 +95,23 @@
 (defun org-babel-execute:gptel (body params)
   "Execute a block of GPTel code with org-babel."
   (let* ((processed-params (org-babel-process-params params))
-         (model (or (cdr (assq :model processed-params))
+         (backend (or (alist-get :backend processed-params)
+                      ob-gptel-default-backend))
+         (model (or (alist-get :model processed-params)
                     ob-gptel-default-model))
-         (system-message (or (cdr (assq :system-message processed-params))
+         (system-message (or (alist-get :system-message processed-params)
                              ob-gptel-default-system-message)))
     (condition-case err
         (let (
-              ;; TODO (gptel-backend backend)
+              (gptel-backend backend)
               (gptel-model model))
           (gptel-request
               body
             :system system-message
             :callback (lambda (response _)
-                        response))
-          (error
-           (format "GPTel request failed: %s" (error-message-string err)))))))
-
+                        response)))
+      (error
+       (format "GPTel request failed: %s" (error-message-string err))))))
 
 (provide 'ob-gptel)
 ;;; ob-gptel.el ends here
