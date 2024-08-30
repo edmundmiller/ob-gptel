@@ -67,11 +67,9 @@
 (require 'ob-eval)
 (require 'gptel)
 
-;; optionally declare default header arguments for this language
 (defvar org-babel-default-header-args:gptel
   '((:model . "gpt-3.5-turbo")
-    (:system-message . "You are a helpful assistant.")
-    (:results . "raw"))
+    (:system-message . "You are a helpful assistant."))
   "Default arguments for evaluating a gptel source block.")
 
 (defcustom ob-gptel-default-model "gpt-3.5-turbo"
@@ -83,6 +81,7 @@
   "Default system message to use when executing a gptel source block."
   :group 'org-babel
   :type 'string)
+
 
 ;; Set block highlighting to org-mode
 ;; TODO set to gptel-default-mode
@@ -96,15 +95,16 @@
          (system-message (or (cdr (assq :system-message processed-params))
                              ob-gptel-default-system-message)))
     (condition-case err
-        (gptel-request
-            body
-          :system system-message
-          :model model
-          :callback (lambda (response _)
-                      response))
-      (error
-       (format "GPTel request failed: %s" (error-message-string err))))))
-
+        (let (
+              ;; TODO (gptel-backend backend)
+              (gptel-model model))
+          (gptel-request
+              body
+            :system system-message
+            :callback (lambda (response _)
+                        response))
+          (error
+           (format "GPTel request failed: %s" (error-message-string err)))))))
 
 
 (provide 'ob-gptel)

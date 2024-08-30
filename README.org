@@ -4,9 +4,8 @@
 
 I was looking at https://github.com/tyler-dodge/org-assistant and I thought it would be great to have an org babel package. Something like
 
-#+begin_src gptel
+#+begin_src gptel :model claude-3-opus-20240229
 Who's a good LLM?
 #+end_src
 
 #+RESULTS:
-: GPTel request failed: Keyword argument :model not one of (:callback :buffer :position :context :dry-run :stream :in-place :system)
