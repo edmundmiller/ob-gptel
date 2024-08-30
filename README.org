@@ -4,8 +4,8 @@
 
 I was looking at https://github.com/tyler-dodge/org-assistant and I thought it would be great to have an org babel package. Something like
 
-#+begin_src gptel :model kagi:summarize:agnes :system-message "Summarize this link"
-https://blah.com
+#+begin_src gptel
+Who's a good LLM?
 #+end_src
 
 #+RESULTS:

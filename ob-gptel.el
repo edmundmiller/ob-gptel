@@ -70,7 +70,8 @@
 ;; optionally declare default header arguments for this language
 (defvar org-babel-default-header-args:gptel
   '((:model . "gpt-3.5-turbo")
-    (:system-message . "You are a helpful assistant."))
+    (:system-message . "You are a helpful assistant.")
+    (:results . "raw"))
   "Default arguments for evaluating a gptel source block.")
 
 (defcustom ob-gptel-default-model "gpt-3.5-turbo"
@@ -82,6 +83,10 @@
   "Default system message to use when executing a gptel source block."
   :group 'org-babel
   :type 'string)
+
+;; Set block highlighting to org-mode
+;; TODO set to gptel-default-mode
+(add-to-list 'org-src-lang-modes '("gptel" . org))
 
 (defun org-babel-execute:gptel (body params)
   "Execute a block of GPTel code with org-babel."
@@ -99,6 +104,8 @@
                       response))
       (error
        (format "GPTel request failed: %s" (error-message-string err))))))
+
+
 
 (provide 'ob-gptel)
 ;;; ob-gptel.el ends here
